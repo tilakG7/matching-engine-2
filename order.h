@@ -1,5 +1,8 @@
+#pragma once
 #include <cstdint>
 #include <iostream>
+
+#include "market_order_book.h"
 
 // include boost C++ library
 #include "boost/date_time/posix_time/posix_time.hpp"

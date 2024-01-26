@@ -1,5 +1,9 @@
+#pragma once
+
 #include <cstdint>
 #include <iostream>
+
+#include "market_order_book.h"
 
 class Exchange {
 public:
@@ -7,7 +11,8 @@ public:
 
 private:
     static constexpr uint64_t kNumSecurities{8};
-    static constexpr std::array<std::string_view, kNumSecurities> securities_{
+    inline static std::array<MarketOrderBook, kNumSecurities> m_mob{};
+    static constexpr std::array<std::string_view, kNumSecurities> m_securities{
         "TSLA",
         "AMZN",
         "AAPL",
@@ -18,7 +23,7 @@ private:
         "META",
     };
 
-    static std::array<double, kNumSecurities> prices_{
+    inline static std::array<double, kNumSecurities> m_prices{
         238.45,
         148.47,
         184.25,

@@ -8,9 +8,9 @@
 #include "boost/date_time/posix_time/posix_time.hpp"
 
 void Exchange::printInfo() const noexcept {
-    auto sec_it = securities_.begin();
-    auto price_it = prices_.begin();
-    for(; sec_it != securities_.end() && price_it != prices_.end(); sec_it++, price_it++) {
+    auto sec_it = m_securities.begin();
+    auto price_it = m_prices.begin();
+    for(; sec_it != m_securities.end() && price_it != m_prices.end(); sec_it++, price_it++) {
         std::cout << *sec_it << ": " << *price_it << std::endl;
     }
 }
@@ -39,6 +39,13 @@ int main(int argc, char *argv[]) {
     Exchange e;
     e.printInfo();
 
+    // matching market orders
+    // how to?
+    // storing past market orders
+    // per security, there needs to be a bid side and ask side queue
+    // 1. check if there are any market orders on the sell side...
+
+    
 }
 
 
