@@ -15,27 +15,30 @@ void Exchange::printInfo() const noexcept {
     }
 }
 
+// void Exchange::matchBidMarketOrder(uint64_t num, uin64_t id) {
+//     MarketOrderBook &m_mob = m_mob[id];
+//     m_mob
+// }
+
 
 // code to test...
 int main(int argc, char *argv[]) {
-    MarketOrder order_1{
+    MarketOrder<true> order_1{
         1U,
         1U,
         100U,
-        true,
         boost::posix_time::microsec_clock::local_time()
     };
 
-    LimitOrder order_2{
+    LimitOrder<true> order_2{
         202.34,
         1U,
         2U,
         1200,
-        true,
         boost::posix_time::microsec_clock::local_time()
     };
-    printMarketOrder(order_1);
-    printLimitOrder(order_2);
+    order_1.print();
+    order_2.print();
     Exchange e;
     e.printInfo();
 
