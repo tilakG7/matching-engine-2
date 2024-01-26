@@ -15,26 +15,52 @@ void Exchange::printInfo() const noexcept {
     }
 }
 
-// void Exchange::matchBidMarketOrder(uint64_t num, uin64_t id) {
-//     MarketOrderBook &m_mob = m_mob[id];
-//     m_mob
-// }
+template<bool Bid>
+void Exchange::matchMarketOrder(const MarketOrder& o) {
+    MarketOrderBook &oppo_book = (Bid ? m_mob_ask[o.sec_id] : m_mob_bid[o.sec_id]);
+    MarketOrderBook &curr_book = (Bid ? m_mob_bid[o.sec_id] : m_mob_ask[o.sec_id]);
+
+    // try to match while we still have orders left and
+    // there are orders to match to
+    while(!oppo_book.empty() && o.quantity) {
+        uint64_t &oppo_quantity = oppo_book.getQuantity();
+
+        if(oppo_quantity > o.quantity) {
+            oppo_quantity -= o.quantity;
+            o.complete();
+        }
+        else if(o.quantity > oppo_quantity) {
+            o.quantity -= oppo_quantity;
+            oppo_book.completeFront();
+        }
+        else {
+            o.complete();
+            oppo_book.completeFront();
+        }
+    }
+
+    if(o.quantity) {
+        curr_book.add(o);
+    }
+}
 
 
 // code to test...
 int main(int argc, char *argv[]) {
-    MarketOrder<true> order_1{
+    MarketOrder order_1{
         1U,
         1U,
         100U,
+        true,
         boost::posix_time::microsec_clock::local_time()
     };
 
-    LimitOrder<true> order_2{
+    LimitOrder order_2{
         202.34,
         1U,
         2U,
         1200,
+        true,
         boost::posix_time::microsec_clock::local_time()
     };
     order_1.print();

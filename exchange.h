@@ -9,11 +9,13 @@ class Exchange {
 public:
     void printInfo() const noexcept;
 
+    template<bool Bid>
     void matchMarketOrder();
 
 private:
     static constexpr uint64_t kNumSecurities{8};
-    // inline static std::array<MarketOrderBook, kNumSecurities> m_mob{};
+    inline static std::array<MarketOrderBook, kNumSecurities> m_mob_bid{};
+    inline static std::array<MarketOrderBook, kNumSecurities> m_mob_ask{};
     static constexpr std::array<std::string_view, kNumSecurities> m_securities{
         "TSLA",
         "AMZN",
