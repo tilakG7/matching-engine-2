@@ -3,7 +3,7 @@
 #include "order.h"
 
 #include <iostream>
-#include <queue>
+#include <deque>
 
 class MarketOrderBook {
 public:
@@ -11,22 +11,28 @@ public:
         return m_book.empty();
     }
     
-    // returns the number of orders in the current order
+    // returns the quantity of shares in the order at the front of the queue
     uint64_t& getQuantity() {
         assert(!empty());
-        return m_book.front.quantity;
+        return m_book.front().quantity;
     }
 
     void addOrder(const MarketOrder &&o) {
-        q.emplace(o.sec_id, o.order_id, o.quantity, o.bid, o.time);
+        m_book.push_back(o);
     }
 
     void completeFront() {
         assert(!empty());
         m_book.front().complete();
-        m_book.pop();
+        m_book.pop_front();
+    }
+
+    void print() const noexcept{
+        for(const auto& order_iterator : m_book) {
+            order_iterator.print();
+        }
     }
 
 private:
-    std::queue<MarketOrder> m_book{};
+    std::deque<MarketOrder> m_book{};
 };

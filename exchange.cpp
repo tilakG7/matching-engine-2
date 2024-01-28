@@ -13,10 +13,21 @@ void Exchange::printInfo() const noexcept {
     for(; sec_it != m_securities.end() && price_it != m_prices.end(); sec_it++, price_it++) {
         std::cout << *sec_it << ": " << *price_it << std::endl;
     }
+
+    for(uint64_t i=0; i < m_mob_ask.size(); i++)
+    {
+        std::cout << m_securities[i] << ": Order books" << std::endl;
+        std::cout << "---MarketOrderBook Bid Side---" << std::endl;
+        m_mob_bid[i].print();
+        std::cout << "------------------------------" << std::endl;
+        std::cout << "---MarketOrderBook Ask Side---" << std::endl;
+        m_mob_ask[i].print();
+        std::cout << "------------------------------" << std::endl;
+    }
 }
 
 template<bool Bid>
-void Exchange::matchMarketOrder(const MarketOrder& o) {
+void Exchange::matchMarketOrder(MarketOrder& o) {
     MarketOrderBook &oppo_book = (Bid ? m_mob_ask[o.sec_id] : m_mob_bid[o.sec_id]);
     MarketOrderBook &curr_book = (Bid ? m_mob_bid[o.sec_id] : m_mob_ask[o.sec_id]);
 
@@ -40,7 +51,7 @@ void Exchange::matchMarketOrder(const MarketOrder& o) {
     }
 
     if(o.quantity) {
-        curr_book.add(o);
+        curr_book.addOrder(std::move(o));
     }
 }
 
@@ -55,18 +66,30 @@ int main(int argc, char *argv[]) {
         boost::posix_time::microsec_clock::local_time()
     };
 
-    LimitOrder order_2{
-        202.34,
+    MarketOrder order_2{
         1U,
         2U,
         1200,
-        true,
+        false,
         boost::posix_time::microsec_clock::local_time()
     };
-    order_1.print();
-    order_2.print();
+    // order_1.print();
+    // order_2.print();
+    // e.printInfo();
     Exchange e;
+    if(order_1.bid) {
+        e.matchMarketOrder<true>(order_1);
+    } else {
+        e.matchMarketOrder<false>(order_1);
+    }
+    if(order_2.bid) {
+        e.matchMarketOrder<true>(order_2);
+    } else {
+        e.matchMarketOrder<false>(order_2);
+    }
     e.printInfo();
+
+
 
     // matching market orders
     // how to?

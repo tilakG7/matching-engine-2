@@ -10,7 +10,7 @@ public:
     void printInfo() const noexcept;
 
     template<bool Bid>
-    void matchMarketOrder();
+    void matchMarketOrder(MarketOrder& o);
 
 private:
     static constexpr uint64_t kNumSecurities{8};

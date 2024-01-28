@@ -14,7 +14,7 @@ struct MarketOrder {
     const bool bid;
     boost::posix_time::ptime time;
 
-    void print() {
+    void print() const {
         std::cout << "-------MarketOrder---------" << std::endl;
         std::cout << "order id = " << order_id << std::endl;
         std::cout << "security id = " << sec_id << std::endl;
@@ -24,7 +24,7 @@ struct MarketOrder {
         std::cout << "---------------------------" << std::endl;
     }
 
-    void complete() {
+    void complete() const {
         std::cout << "-------MarketOrder---------" << std::endl;
         std::cout << "COMPLETE" << std::endl;
         std::cout << "order id = " << order_id << std::endl;
