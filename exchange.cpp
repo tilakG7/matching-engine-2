@@ -55,6 +55,25 @@ void Exchange::matchMarketOrder(MarketOrder& o) {
     }
 }
 
+// void Exchange::matchLimitOrder(LimitOrder &o) {
+    // steps:
+    // 1. check if the limit condition is being met
+    // bid: at limit price or lower
+    // ask: at limit price or higher
+
+    // 2. If it is not being met, store in data structure (TBD)
+
+    // 3. Being met:
+    // Try match with market order
+    //      opposing side market order must exist
+    // Try match with other limit order
+    //      opposing side limit order must be met
+    //      take the difference between the 2 prices and update the securities 
+    //      prices
+// }
+
+// need 1 side for bidding, 1 side for asking...
+// order by limit price...
 
 // code to test...
 int main(int argc, char *argv[]) {
@@ -88,6 +107,37 @@ int main(int argc, char *argv[]) {
         e.matchMarketOrder<false>(order_2);
     }
     e.printInfo();
+
+    LimitOrder o3{
+        100.0,
+        1U,
+        1U,
+        100U,
+        false,
+        boost::posix_time::microsec_clock::local_time()
+    };
+    LimitOrder o4{
+        200.0,
+        1U,
+        1U,
+        100U,
+        false,
+        boost::posix_time::microsec_clock::local_time()
+    };
+
+    LimitOrder o5{
+        150.0,
+        1U,
+        1U,
+        100U,
+        false,
+        boost::posix_time::microsec_clock::local_time()
+    };
+    e.delete_after.addOrder(o3);
+    e.delete_after.addOrder(o4);
+    e.delete_after.addOrder(o5);
+
+    e.delete_after.print();
 
 
 

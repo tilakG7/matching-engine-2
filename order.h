@@ -40,7 +40,7 @@ struct LimitOrder {
     const bool bid;
     boost::posix_time::ptime time;
 
-    void print() {
+    void print() const {
         std::cout << "-------LimitOrder---------" << std::endl;
         std::cout << "limit price = " << limit << std::endl;
         std::cout << "order id = " << order_id << std::endl;
